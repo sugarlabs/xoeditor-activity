@@ -1,0 +1,8 @@
+[Activity]
+name = xoEditor
+activity_version = 1
+host_version = 1
+icon = activity-xoEditor
+service_name = org.laptop.xoEditorActivity
+class = xoEditorActivity.xoEditorActivity
+show_launcher = 1
