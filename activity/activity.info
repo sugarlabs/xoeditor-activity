@@ -1,8 +1,8 @@
 [Activity]
 name = xoEditor
-activity_version = 1
-host_version = 1
-icon = activity-xoEditor
-service_name = org.laptop.xoEditorActivity
-class = xoEditorActivity.xoEditorActivity
-show_launcher = 1
+exec = sugar-activity XOEditorActivity.XOEditorActivity
+bundle_id = org.laptop.xoEditorActivity
+icon = activity-xo-editor
+activity_version = 3
+show_launcher = yes
+license=GPLv3

@@ -1,2 +1,9 @@
-1
-* initial release
+NEWS
+
+3
+* Rebased on Python
+* Spiral layout of all color combinations
+* Saves new colors (in most Sugar environments)
+
+2
+* initial release as a Javascript program run inside of Browse
