@@ -70,7 +70,7 @@ class Game():
         # Generate the sprites we'll need...
         self._sprites = Sprites(self._canvas)
         self._dots = []
-        self._xoman = None
+        self._xo_man = None
         self._generate_bg('#FFF')
 
         # First dot, starting angle
@@ -84,13 +84,12 @@ class Game():
 
         self._zones = []
         self._calc_zones()
-        self._generate_grid()
+        self._generate_spiral()
 
     def _calc_zones(self):
         for color in colors:
             rgb1 = _from_hex(color[0])
             rgb2 = _from_hex(color[1])
-            print rgb1, rgb2
             dv = _contrast(rgb1, rgb2)
             dh = _delta_hue(rgb1, rgb2)
             self._zones.append(_zone(dv, dh))
@@ -110,8 +109,8 @@ class Game():
         if self._xy[1] < self._min or self._xy[1] > self._max:
             self._calc_next_dot_position()
 
-    def _generate_grid(self):
-        ''' Make a new set of dots for a grid of size edge '''
+    def _generate_spiral(self):
+        ''' Make a new set of dots for a sprial '''
         for z in range(4):
             for i in range(len(colors)):
                 if self._zones[i] == z:
@@ -120,12 +119,24 @@ class Game():
                                self._new_dot(colors[i])))
                     self._dots[-1].type = i
                     self._calc_next_dot_position()
-        if self._xoman is None:
+        if self._xo_man is None:
             x = 510 * self._scale
             y = 280 * self._scale
-            self._xoman = Sprite(self._sprites, x, y,
+            self._xo_man = Sprite(self._sprites, x, y,
                                  self._new_xo_man(self.colors))
-            self._xoman.type = None
+            self._xo_man.type = None
+
+    def move_dot(self, i, x, y):
+        self._dots[i].move((x, y))
+
+    def get_dot_xy(self, i):
+        return self._dots[i].get_xy()
+
+    def move_xo_man(self, x, y):
+        self._xo_man.move((x, y))
+
+    def get_xo_man_xy(self):
+        return self._xo_man.get_xy()
 
     def rotate(self):
         x, y = self._dots[0].get_xy()
@@ -150,10 +161,10 @@ class Game():
         self.dragpos = [x, y]
 
         spr = self._sprites.find_sprite((x, y))
+        if spr == None or spr == self._bg:
+            return
         self.startpos = spr.get_xy()
         self.press = spr
-        if spr == None:
-            return
 
     def _mouse_move_cb(self, win, event):
         """ Drag a rule with the mouse. """
@@ -180,8 +191,8 @@ class Game():
     def _new_surface(self):
         self.colors[0] = colors[self.i][0]
         self.colors[1] = colors[self.i][1]
-        self._xoman.set_image(self._new_xo_man(colors[self.i]))
-        self._xoman.set_layer(100)
+        self._xo_man.set_image(self._new_xo_man(colors[self.i]))
+        self._xo_man.set_layer(100)
 
     def _expose_cb(self, win, event):
         self.do_expose_event(event)
