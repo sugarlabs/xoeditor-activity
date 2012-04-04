@@ -45,13 +45,21 @@ class Game():
             self._parent = parent
 
         self._canvas.set_flags(gtk.CAN_FOCUS)
-        self._canvas.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self._canvas.connect("expose-event", self._expose_cb)
+        self._canvas.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self._canvas.connect("button-press-event", self._button_press_cb)
+        self._canvas.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
+        self._canvas.connect('button-release-event', self._button_release_cb)
+        self._canvas.add_events(gtk.gdk.POINTER_MOTION_MASK)
+        self._canvas.connect("motion-notify-event", self._mouse_move_cb)
 
         self._width = gtk.gdk.screen_width()
         self._height = gtk.gdk.screen_height() - GRID_CELL_SIZE
         self._scale = self._width / 1200.
+
+        self.press = None
+        self.dragpos = [0, 0]
+        self.startpos = [0, 0]
 
         self._dot_cache = {}
         self._xo_cache = {}
@@ -139,17 +147,35 @@ class Game():
     def _button_press_cb(self, win, event):
         win.grab_focus()
         x, y = map(int, event.get_coords())
+        self.dragpos = [x, y]
 
         spr = self._sprites.find_sprite((x, y))
+        self.startpos = spr.get_xy()
+        self.press = spr
         if spr == None:
             return
 
-        if type(spr.type) == int:
-            self.i = spr.type
-            _logger.debug('%d' % (self.i))
-            self._new_surface()
-        else:
-            _logger.debug(type(spr.type))
+    def _mouse_move_cb(self, win, event):
+        """ Drag a rule with the mouse. """
+        if self.press is None:
+            self.dragpos = [0, 0]
+            return True
+        win.grab_focus()
+        x, y = map(int, event.get_coords())
+        dx = x - self.dragpos[0]
+        dy = y - self.dragpos[1]
+        self.press.move_relative((dx, dy))
+        self.dragpos = [x, y]
+
+    def _button_release_cb(self, win, event):
+        if self.press == None:
+            return True
+        if _distance(self.press.get_xy(), self.startpos) < 20:
+            if type(self.press.type) == int:
+                self.i = self.press.type
+                self._new_surface()
+            self.press.move(self.startpos)
+        self.press = None
 
     def _new_surface(self):
         self.colors[0] = colors[self.i][0]
@@ -342,3 +368,8 @@ def _zone(dv, dh):
     if dv > 48:
         zone += 1
     return zone
+
+
+def _distance(pos1, pos2):
+    return sqrt((pos1[0] - pos2[0]) * (pos1[0] - pos2[0]) + \
+                (pos1[1] - pos2[1]) * (pos1[1] - pos2[1]))

@@ -120,18 +120,22 @@ class Sprites:
         else:
             self.list.insert(i, spr)
 
+    def find_in_list(self, spr):
+        if spr in self.list:
+            return True
+        return False
+
     def remove_from_list(self, spr):
         ''' Remove a sprite from the list. '''
         if spr in self.list:
             self.list.remove(spr)
 
-    def find_sprite(self, pos, inverse=False):
+    def find_sprite(self, pos, region=False):
         ''' Search based on (x, y) position. Return the 'top/first' one. '''
         list = self.list[:]
-        if not inverse:
-            list.reverse()
+        list.reverse()
         for spr in list:
-            if spr.hit(pos):
+            if spr.hit(pos, readpixel=not region):
                 return spr
         return None
 
@@ -346,7 +350,7 @@ class Sprite:
         if len(self.labels) > 0:
             self.draw_label(cr)
 
-    def hit(self, pos):
+    def hit(self, pos, readpixel=False):
         ''' Is (x, y) on top of the sprite? '''
         x, y = pos
         if x < self.rect.x:
@@ -357,7 +361,13 @@ class Sprite:
             return False
         if y > self.rect.y + self.rect.height:
             return False
-        return True
+        if readpixel:
+            r, g, b, a = self.get_pixel(pos)
+            if r == g == b == a == 0:
+                return False
+            if a == -1:
+                return False
+        return self._sprites.find_in_list(self)
 
     def draw_label(self, cr):
         ''' Draw the label based on its attributes '''
