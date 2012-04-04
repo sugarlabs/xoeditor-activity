@@ -74,7 +74,18 @@ class Game():
         self._min = -self._dot_size_plus / 3
         self._max = self._height - (self._dot_size_plus / 2.2)
 
+        self._zones = []
+        self._calc_zones()
         self._generate_grid()
+
+    def _calc_zones(self):
+        for color in colors:
+            rgb1 = _from_hex(color[0])
+            rgb2 = _from_hex(color[1])
+            print rgb1, rgb2
+            dv = _contrast(rgb1, rgb2)
+            dh = _delta_hue(rgb1, rgb2)
+            self._zones.append(_zone(dv, dh))
 
     def _calc_next_dot_position(self):
         ''' calculate spiral coordinates '''
@@ -93,13 +104,14 @@ class Game():
 
     def _generate_grid(self):
         ''' Make a new set of dots for a grid of size edge '''
-        _logger.debug('%d colors' % (len(colors)))
-        for i in range(len(colors)):
-            self._dots.append(
-                Sprite(self._sprites, self._xy[0], self._xy[1],
-                       self._new_dot(colors[i])))
-            self._dots[-1].type = i
-            self._calc_next_dot_position()
+        for z in range(4):
+            for i in range(len(colors)):
+                if self._zones[i] == z:
+                    self._dots.append(
+                        Sprite(self._sprites, self._xy[0], self._xy[1],
+                               self._new_dot(colors[i])))
+                    self._dots[-1].type = i
+                    self._calc_next_dot_position()
         if self._xoman is None:
             x = 510 * self._scale
             y = 280 * self._scale
@@ -280,6 +292,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
     def _footer(self):
         return '</svg>\n'
 
+
 def svg_str_to_pixbuf(svg_string):
     """ Load pixbuf from SVG string """
     pl = gtk.gdk.PixbufLoader('svg')
@@ -289,5 +302,43 @@ def svg_str_to_pixbuf(svg_string):
     return pixbuf
 
 
+def _from_hex(num):
+    r = float.fromhex('0x' + num[1:3])
+    g = float.fromhex('0x' + num[3:5])
+    b = float.fromhex('0x' + num[5:])
+    return [r, g, b]
+
+
 def _to_hex(rgb):
     return('#%02x%02x%02x' % (rgb[0], rgb[1], rgb[2]))
+
+
+def _contrast(rgb1, rgb2):
+    v1 = float(rgb1[0]) * 0.3 + float(rgb1[1]) * 0.6 + float(rgb1[2]) * 0.1
+    v2 = float(rgb2[0]) * 0.3 + float(rgb2[1]) * 0.6 + float(rgb2[2]) * 0.1
+    return abs(v2 - v1)
+
+
+def _hue(rgb):
+    a = 0.5 * (2.0 * rgb[0] - rgb[1] - rgb[2])
+    b = 0.87 * (rgb[1] - rgb[2])
+    h = atan2(b, a)
+    return h * 180 / pi
+
+
+def _delta_hue(rgb1, rgb2):
+    h1 = _hue(rgb1)
+    h2 = _hue(rgb2)
+    return abs(h2 - h1)
+
+
+def _zone(dv, dh):
+    if dh < 75:
+        zone = 0
+    elif dh > 150:
+        zone = 1
+    else:
+        zone = 2
+    if dv > 48:
+        zone += 1
+    return zone
