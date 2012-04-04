@@ -1,5 +1,10 @@
 NEWS
 
+4
+* New button artwork
+* Eliminated unnecessary rotate feature
+* Sorted colors in spiral from "calm" to "exciting"
+
 3
 * Rebased on Python
 * Spiral layout of all color combinations
