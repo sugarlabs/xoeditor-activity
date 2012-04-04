@@ -4,6 +4,7 @@ NEWS
 * New button artwork
 * Eliminated unnecessary rotate feature
 * Sorted colors in spiral from "calm" to "exciting"
+* Drag to repostion dots and XO man (positions saved in Journal)
 
 3
 * Rebased on Python
@@ -11,4 +12,4 @@ NEWS
 * Saves new colors (in most Sugar environments)
 
 2
-* initial release as a Javascript program run inside of Browse
+* Initial release as a Javascript program run inside of Browse
