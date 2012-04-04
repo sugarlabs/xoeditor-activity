@@ -96,15 +96,17 @@ class XOEditorActivity(activity.Activity):
             toolbox.set_current_toolbar(1)
             self.toolbar = games_toolbar
 
+        '''
         _rotate_button = button_factory(
             'view-refresh', self.toolbar, self._rotate_cb,
             tooltip=_('Rotate colors'))
+        '''
 
         if _have_toolbox:
             separator_factory(toolbox.toolbar, True, False)
 
         self._save_colors_button = button_factory(
-            'document-save', self.toolbar, self._save_colors_cb,
+            'save-colors', self.toolbar, self._save_colors_cb,
             tooltip=_('Save colors'))
 
         if _have_toolbox:
@@ -115,7 +117,7 @@ class XOEditorActivity(activity.Activity):
 
     def _save_colors_cb(self, button=None):
         ''' Save the new XO colors. '''
-        ''' We warn the user if the plugin was previously loaded '''
+        ''' We warn the user if they are going to save their selection '''
         alert = ConfirmationAlert()
         alert.props.title = _('Saving colors')
         alert.props.msg = _('Do you want to save these colors?')
@@ -140,7 +142,7 @@ class XOEditorActivity(activity.Activity):
                 self._game.colors[0], self._game.colors[1]))
         alert = NotifyAlert()
         alert.props.title = _('Saving colors')
-        alert.props.msg = _('Restart required before new colors will appear.')
+        alert.props.msg = _('A restart is required before your new colors will appear.')
 
         def _notification_alert_response_cb(alert, response_id, self):
             self.remove_alert(alert)
