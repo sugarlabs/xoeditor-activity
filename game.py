@@ -45,13 +45,21 @@ class Game():
             self._parent = parent
 
         self._canvas.set_flags(gtk.CAN_FOCUS)
-        self._canvas.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self._canvas.connect("expose-event", self._expose_cb)
+        self._canvas.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self._canvas.connect("button-press-event", self._button_press_cb)
+        self._canvas.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
+        self._canvas.connect('button-release-event', self._button_release_cb)
+        self._canvas.add_events(gtk.gdk.POINTER_MOTION_MASK)
+        self._canvas.connect("motion-notify-event", self._mouse_move_cb)
 
         self._width = gtk.gdk.screen_width()
         self._height = gtk.gdk.screen_height() - GRID_CELL_SIZE
         self._scale = self._width / 1200.
+
+        self.press = None
+        self.dragpos = [0, 0]
+        self.startpos = [0, 0]
 
         self._dot_cache = {}
         self._xo_cache = {}
@@ -62,7 +70,7 @@ class Game():
         # Generate the sprites we'll need...
         self._sprites = Sprites(self._canvas)
         self._dots = []
-        self._xoman = None
+        self._xo_man = None
         self._generate_bg('#FFF')
 
         # First dot, starting angle
@@ -74,7 +82,17 @@ class Game():
         self._min = -self._dot_size_plus / 3
         self._max = self._height - (self._dot_size_plus / 2.2)
 
-        self._generate_grid()
+        self._zones = []
+        self._calc_zones()
+        self._generate_spiral()
+
+    def _calc_zones(self):
+        for color in colors:
+            rgb1 = _from_hex(color[0])
+            rgb2 = _from_hex(color[1])
+            dv = _contrast(rgb1, rgb2)
+            dh = _delta_hue(rgb1, rgb2)
+            self._zones.append(_zone(dv, dh))
 
     def _calc_next_dot_position(self):
         ''' calculate spiral coordinates '''
@@ -91,21 +109,34 @@ class Game():
         if self._xy[1] < self._min or self._xy[1] > self._max:
             self._calc_next_dot_position()
 
-    def _generate_grid(self):
-        ''' Make a new set of dots for a grid of size edge '''
-        _logger.debug('%d colors' % (len(colors)))
-        for i in range(len(colors)):
-            self._dots.append(
-                Sprite(self._sprites, self._xy[0], self._xy[1],
-                       self._new_dot(colors[i])))
-            self._dots[-1].type = i
-            self._calc_next_dot_position()
-        if self._xoman is None:
+    def _generate_spiral(self):
+        ''' Make a new set of dots for a sprial '''
+        for z in range(4):
+            for i in range(len(colors)):
+                if self._zones[i] == z:
+                    self._dots.append(
+                        Sprite(self._sprites, self._xy[0], self._xy[1],
+                               self._new_dot(colors[i])))
+                    self._dots[-1].type = i
+                    self._calc_next_dot_position()
+        if self._xo_man is None:
             x = 510 * self._scale
             y = 280 * self._scale
-            self._xoman = Sprite(self._sprites, x, y,
+            self._xo_man = Sprite(self._sprites, x, y,
                                  self._new_xo_man(self.colors))
-            self._xoman.type = None
+            self._xo_man.type = None
+
+    def move_dot(self, i, x, y):
+        self._dots[i].move((x, y))
+
+    def get_dot_xy(self, i):
+        return self._dots[i].get_xy()
+
+    def move_xo_man(self, x, y):
+        self._xo_man.move((x, y))
+
+    def get_xo_man_xy(self):
+        return self._xo_man.get_xy()
 
     def rotate(self):
         x, y = self._dots[0].get_xy()
@@ -127,23 +158,41 @@ class Game():
     def _button_press_cb(self, win, event):
         win.grab_focus()
         x, y = map(int, event.get_coords())
+        self.dragpos = [x, y]
 
         spr = self._sprites.find_sprite((x, y))
-        if spr == None:
+        if spr == None or spr == self._bg:
             return
+        self.startpos = spr.get_xy()
+        self.press = spr
 
-        if type(spr.type) == int:
-            self.i = spr.type
-            _logger.debug('%d' % (self.i))
-            self._new_surface()
-        else:
-            _logger.debug(type(spr.type))
+    def _mouse_move_cb(self, win, event):
+        """ Drag a rule with the mouse. """
+        if self.press is None:
+            self.dragpos = [0, 0]
+            return True
+        win.grab_focus()
+        x, y = map(int, event.get_coords())
+        dx = x - self.dragpos[0]
+        dy = y - self.dragpos[1]
+        self.press.move_relative((dx, dy))
+        self.dragpos = [x, y]
+
+    def _button_release_cb(self, win, event):
+        if self.press == None:
+            return True
+        if _distance(self.press.get_xy(), self.startpos) < 20:
+            if type(self.press.type) == int:
+                self.i = self.press.type
+                self._new_surface()
+            self.press.move(self.startpos)
+        self.press = None
 
     def _new_surface(self):
         self.colors[0] = colors[self.i][0]
         self.colors[1] = colors[self.i][1]
-        self._xoman.set_image(self._new_xo_man(colors[self.i]))
-        self._xoman.set_layer(100)
+        self._xo_man.set_image(self._new_xo_man(colors[self.i]))
+        self._xo_man.set_layer(100)
 
     def _expose_cb(self, win, event):
         self.do_expose_event(event)
@@ -280,6 +329,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
     def _footer(self):
         return '</svg>\n'
 
+
 def svg_str_to_pixbuf(svg_string):
     """ Load pixbuf from SVG string """
     pl = gtk.gdk.PixbufLoader('svg')
@@ -289,5 +339,48 @@ def svg_str_to_pixbuf(svg_string):
     return pixbuf
 
 
+def _from_hex(num):
+    r = float.fromhex('0x' + num[1:3])
+    g = float.fromhex('0x' + num[3:5])
+    b = float.fromhex('0x' + num[5:])
+    return [r, g, b]
+
+
 def _to_hex(rgb):
     return('#%02x%02x%02x' % (rgb[0], rgb[1], rgb[2]))
+
+
+def _contrast(rgb1, rgb2):
+    v1 = float(rgb1[0]) * 0.3 + float(rgb1[1]) * 0.6 + float(rgb1[2]) * 0.1
+    v2 = float(rgb2[0]) * 0.3 + float(rgb2[1]) * 0.6 + float(rgb2[2]) * 0.1
+    return abs(v2 - v1)
+
+
+def _hue(rgb):
+    a = 0.5 * (2.0 * rgb[0] - rgb[1] - rgb[2])
+    b = 0.87 * (rgb[1] - rgb[2])
+    h = atan2(b, a)
+    return h * 180 / pi
+
+
+def _delta_hue(rgb1, rgb2):
+    h1 = _hue(rgb1)
+    h2 = _hue(rgb2)
+    return abs(h2 - h1)
+
+
+def _zone(dv, dh):
+    if dh < 75:
+        zone = 0
+    elif dh > 150:
+        zone = 1
+    else:
+        zone = 2
+    if dv > 48:
+        zone += 1
+    return zone
+
+
+def _distance(pos1, pos2):
+    return sqrt((pos1[0] - pos2[0]) * (pos1[0] - pos2[0]) + \
+                (pos1[1] - pos2[1]) * (pos1[1] - pos2[1]))

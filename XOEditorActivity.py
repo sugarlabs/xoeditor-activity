@@ -27,6 +27,7 @@ if _have_toolbox:
     from sugar.activity.widgets import StopButton
 from sugar.graphics.objectchooser import ObjectChooser
 from sugar.graphics.alert import ConfirmationAlert, NotifyAlert
+from sugar.graphics.xocolor import colors
 
 from toolbar_utils import button_factory, radio_factory, separator_factory
 
@@ -68,6 +69,15 @@ class XOEditorActivity(activity.Activity):
 
         self._game = Game(canvas, parent=self, mycolors=self.colors)
 
+        # Read the dot positions from the Journal
+        for i in range(len(colors)):
+            if 'x%d' % (i) in self.metadata and 'y%d' % (i) in self.metadata:
+                self._game.move_dot(i, int(self.metadata['x%d' % (i)]),
+                                    int(self.metadata['y%d' % (i)]))
+        if 'xox' in self.metadata and 'xoy' in self.metadata:
+            self._game.move_xo_man(int(self.metadata['xox']),
+                                   int(self.metadata['xoy']))
+
     def _setup_toolbars(self, have_toolbox):
         """ Setup the toolbars. """
 
@@ -96,15 +106,17 @@ class XOEditorActivity(activity.Activity):
             toolbox.set_current_toolbar(1)
             self.toolbar = games_toolbar
 
+        '''
         _rotate_button = button_factory(
             'view-refresh', self.toolbar, self._rotate_cb,
             tooltip=_('Rotate colors'))
+        '''
 
         if _have_toolbox:
             separator_factory(toolbox.toolbar, True, False)
 
         self._save_colors_button = button_factory(
-            'document-save', self.toolbar, self._save_colors_cb,
+            'save-colors', self.toolbar, self._save_colors_cb,
             tooltip=_('Save colors'))
 
         if _have_toolbox:
@@ -115,7 +127,7 @@ class XOEditorActivity(activity.Activity):
 
     def _save_colors_cb(self, button=None):
         ''' Save the new XO colors. '''
-        ''' We warn the user if the plugin was previously loaded '''
+        ''' We warn the user if they are going to save their selection '''
         alert = ConfirmationAlert()
         alert.props.title = _('Saving colors')
         alert.props.msg = _('Do you want to save these colors?')
@@ -140,7 +152,7 @@ class XOEditorActivity(activity.Activity):
                 self._game.colors[0], self._game.colors[1]))
         alert = NotifyAlert()
         alert.props.title = _('Saving colors')
-        alert.props.msg = _('Restart required before new colors will appear.')
+        alert.props.msg = _('A restart is required before your new colors will appear.')
 
         def _notification_alert_response_cb(alert, response_id, self):
             self.remove_alert(alert)
@@ -151,3 +163,13 @@ class XOEditorActivity(activity.Activity):
 
     def _rotate_cb(self, button=None):
         self._game.rotate()
+
+    def write_file(self, file_path):
+        for i in range(len(colors)):
+            x, y = self._game.get_dot_xy(i)
+            self.metadata['x%d' % (i)] = str(x)
+            self.metadata['y%d' % (i)] = str(y)
+
+        x, y = self._game.get_xo_man_xy()
+        self.metadata['xox'] = str(x)
+        self.metadata['xoy'] = str(y)
