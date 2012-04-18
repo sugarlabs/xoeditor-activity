@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-03 19:07-0400\n"
-"PO-Revision-Date: 2012-04-04 07:47+0200\n"
+"POT-Creation-Date: 2012-04-17 00:32-0400\n"
+"PO-Revision-Date: 2012-04-18 06:48+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_GB\n"
@@ -21,26 +21,25 @@ msgstr ""
 msgid "xoEditor"
 msgstr "xoEditor"
 
-#: XOEditorActivity.py:94
+#: XOEditorActivity.py:104
 msgid "Game"
 msgstr "Game"
 
-#: XOEditorActivity.py:101
-msgid "Rotate colors"
-msgstr "Rotate colours"
-
-#: XOEditorActivity.py:108
+#: XOEditorActivity.py:120
 msgid "Save colors"
 msgstr "Save colours"
 
-#: XOEditorActivity.py:120 XOEditorActivity.py:142
+#: XOEditorActivity.py:132 XOEditorActivity.py:154
 msgid "Saving colors"
 msgstr "Saving colours"
 
-#: XOEditorActivity.py:121
+#: XOEditorActivity.py:133
 msgid "Do you want to save these colors?"
 msgstr "Do you want to save these colours?"
 
-#: XOEditorActivity.py:143
-msgid "Restart required before new colors will appear."
-msgstr "Restart required before new colours will appear."
+#: XOEditorActivity.py:155
+msgid "A restart is required before your new colors will appear."
+msgstr "A restart is required before your new colours will appear."
+
+#~ msgid "Rotate colors"
+#~ msgstr "Rotate colours"
