@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-03 19:07-0400\n"
-"PO-Revision-Date: 2012-04-05 21:53+0200\n"
+"POT-Creation-Date: 2012-04-17 00:32-0400\n"
+"PO-Revision-Date: 2012-04-19 03:29+0200\n"
 "Last-Translator: Aputsiaq Niels <aj@isit.gl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: da\n"
@@ -21,26 +21,25 @@ msgstr ""
 msgid "xoEditor"
 msgstr "xoRedigering"
 
-#: XOEditorActivity.py:94
+#: XOEditorActivity.py:104
 msgid "Game"
 msgstr "Spil"
 
-#: XOEditorActivity.py:101
-msgid "Rotate colors"
-msgstr "Rotér farver"
-
-#: XOEditorActivity.py:108
+#: XOEditorActivity.py:120
 msgid "Save colors"
 msgstr "Gem farver"
 
-#: XOEditorActivity.py:120 XOEditorActivity.py:142
+#: XOEditorActivity.py:132 XOEditorActivity.py:154
 msgid "Saving colors"
 msgstr "Gemmer farver"
 
-#: XOEditorActivity.py:121
+#: XOEditorActivity.py:133
 msgid "Do you want to save these colors?"
 msgstr "Ønsker du at gemme disse farver?"
 
-#: XOEditorActivity.py:143
-msgid "Restart required before new colors will appear."
-msgstr "Der kræves genstart før nye farver bliver vist."
+#: XOEditorActivity.py:155
+msgid "A restart is required before your new colors will appear."
+msgstr "Der kræves genstart før dine nye farver bliver vist."
+
+#~ msgid "Rotate colors"
+#~ msgstr "Rotér farver"
