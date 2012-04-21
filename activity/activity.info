@@ -3,6 +3,6 @@ name = xoEditor
 exec = sugar-activity XOEditorActivity.XOEditorActivity
 bundle_id = org.laptop.xoEditorActivity
 icon = activity-xo-editor
-activity_version = 4
+activity_version = 5
 show_launcher = yes
 license=GPLv3
