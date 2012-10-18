@@ -37,6 +37,25 @@ from game import Game
 
 import logging
 _logger = logging.getLogger('xo-editor-activity')
+def rgb2html(color):
+    """Returns a html string from a Gdk color"""
+    red = "%x" % int(color.red / 65535.0 * 255)
+    if len(red) == 1:
+            red = "0%s" % red
+
+    green = "%x" % int(color.green / 65535.0 * 255)
+
+    if len(green) == 1:
+            green = "0%s" % green
+
+    blue = "%x" % int(color.blue / 65535.0 * 255)
+
+    if len(blue) == 1:
+            blue = "0%s" % blue
+
+    new_color = "#%s%s%s" % (red, green, blue)
+
+    return new_color
 class XOEditorActivity(activity.Activity):
     """ Change the XO colors """
 
@@ -77,6 +96,11 @@ class XOEditorActivity(activity.Activity):
                                    int(self.metadata['xoy']))
                                    
 
+    def _change_stroke(self, Boton, pspec):
+	Stroke_Color_old = Boton.get_color()
+	Stroke_Color = rgb2html(Stroke_Color_Old)
+	client.set_string('/desktop/sugar/user/color', '%s,%s' % (Stroke_Color, self._game.colors[1]))
+                
     def _save_colors_cb(self, button=None):
         ''' Save the new XO colors. '''
         ''' We warn the user if they are going to save their selection '''
@@ -152,6 +176,10 @@ class XOEditorActivity(activity.Activity):
 	self._save_colors_button = button_factory(
 		'save-colors', self.toolbar, self._save_colors_cb,
 		tooltip=_('Save colors'))
+	self._custom_color_button = ColorToolButton()
+	self._custom_color_button.set_title(_('Custom color stroke'))
+	self._custom_color_button.connect('notify::color',self._change_stroke)
+	toolbox.toolbar.insert(self._custom_color_button, -1)
 	if _have_toolbox:
 		stop_button = StopButton(self)
 		stop_button.props.accelerator = '<Ctrl>q'

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 #Copyright (c) 2012 Walter Bender
+# Port To GTK3:
+# Ignacio Rodriguez <ignaciorodriguez@sugarlabs.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -9,10 +11,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this library; if not, write to the Free Software
 # Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
-import gtk
+from gi.repository import Gtk, GObject, Gdk, GdkPixbuf
 import cairo
-import gobject
 
 from math import atan2, sin, cos, sqrt, pi
 
@@ -22,11 +22,11 @@ import logging
 _logger = logging.getLogger('xo-editor-activity')
 
 try:
-    from sugar.graphics import style
+    from sugar3.graphics import style
     GRID_CELL_SIZE = style.GRID_CELL_SIZE
 except ImportError:
     GRID_CELL_SIZE = 0
-from sugar.graphics.xocolor import colors
+from sugar3.graphics.xocolor import colors
 
 from sprites import Sprites, Sprite
 
@@ -44,17 +44,16 @@ class Game():
             parent.show_all()
             self._parent = parent
 
-        self._canvas.set_flags(gtk.CAN_FOCUS)
-        self._canvas.connect("expose-event", self._expose_cb)
-        self._canvas.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        self._canvas.connect("draw", self.__draw_cb)
+        self._canvas.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self._canvas.connect("button-press-event", self._button_press_cb)
-        self._canvas.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
+        self._canvas.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
         self._canvas.connect('button-release-event', self._button_release_cb)
-        self._canvas.add_events(gtk.gdk.POINTER_MOTION_MASK)
+        self._canvas.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
         self._canvas.connect("motion-notify-event", self._mouse_move_cb)
 
-        self._width = gtk.gdk.screen_width()
-        self._height = gtk.gdk.screen_height() - GRID_CELL_SIZE
+        self._width = Gdk.Screen.width()
+        self._height = Gdk.Screen.height() - GRID_CELL_SIZE
         self._scale = self._width / 1200.
 
         self.press = None
@@ -194,8 +193,8 @@ class Game():
         self._xo_man.set_image(self._new_xo_man(colors[self.i]))
         self._xo_man.set_layer(100)
 
-    def _expose_cb(self, win, event):
-        self.do_expose_event(event)
+    def __draw_cb(self, canvas, cr):
+        self._sprites.redraw_sprites(cr=cr)
 
     def do_expose_event(self, event):
         ''' Handle the expose-event by drawing '''
@@ -208,7 +207,7 @@ class Game():
         self._sprites.redraw_sprites(cr=cr)
 
     def _destroy_cb(self, win, event):
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def _new_dot(self, color):
         ''' generate a dot of a color color '''
@@ -229,8 +228,7 @@ stroke-width="%f" visibility="visible" />' % (
             surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
                                          self._svg_width, self._svg_height)
             context = cairo.Context(surface)
-            context = gtk.gdk.CairoContext(context)
-            context.set_source_pixbuf(pixbuf, 0, 0)
+            Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
             context.rectangle(0, 0, self._svg_width, self._svg_height)
             context.fill()
             # self._dot_cache[color] = surface
@@ -251,8 +249,7 @@ y="%f" fill="%s" stroke="none" visibility="visible" />' % (
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
                                      self._svg_width, self._svg_height)
         context = cairo.Context(surface)
-        context = gtk.gdk.CairoContext(context)
-        context.set_source_pixbuf(pixbuf, 0, 0)
+        Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
         context.rectangle(0, 0, self._svg_width, self._svg_height)
         context.fill()
         return surface
@@ -312,8 +309,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
             surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
                                          self._svg_width, self._svg_height)
             context = cairo.Context(surface)
-            context = gtk.gdk.CairoContext(context)
-            context.set_source_pixbuf(pixbuf, 0, 0)
+            Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
             context.rectangle(0, 0, self._svg_width, self._svg_height)
             context.fill()
             # self._xo_cache[color] = surface
@@ -332,7 +328,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
 
 def svg_str_to_pixbuf(svg_string):
     """ Load pixbuf from SVG string """
-    pl = gtk.gdk.PixbufLoader('svg')
+    pl =  GdkPixbuf.PixbufLoader.new_with_type('svg') 
     pl.write(svg_string)
     pl.close()
     pixbuf = pl.get_pixbuf()
