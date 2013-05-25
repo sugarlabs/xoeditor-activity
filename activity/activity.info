@@ -5,4 +5,5 @@ bundle_id = org.laptop.xoEditorActivity
 icon = activity-xo-editor
 activity_version = 9
 show_launcher = yes
-license=GPLv3
+license = GPLv3
+summary = select colors for your XO icon
