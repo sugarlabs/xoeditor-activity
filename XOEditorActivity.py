@@ -11,6 +11,7 @@
 # Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 from gi.repository import Gtk, Gdk, GConf
+import dbus
 
 from sugar3.activity import activity
 from sugar3 import profile
@@ -37,6 +38,8 @@ from game import Game
 
 import logging
 _logger = logging.getLogger('xo-editor-activity')
+
+
 class XOEditorActivity(activity.Activity):
     """ Change the XO colors """
 
@@ -147,12 +150,12 @@ class XOEditorActivity(activity.Activity):
 		toolbox.set_current_toolbar(1)
 		self.toolbar = games_toolbar
 
-	if _have_toolbox:
-		separator_factory(toolbox.toolbar, True, False)
 	self._save_colors_button = button_factory(
 		'save-colors', self.toolbar, self._save_colors_cb,
 		tooltip=_('Save colors'))
+
 	if _have_toolbox:
+		separator_factory(toolbox.toolbar, True, False)
 		stop_button = StopButton(self)
 		stop_button.props.accelerator = '<Ctrl>q'
 		toolbox.toolbar.insert(stop_button, -1)

@@ -1,4 +1,10 @@
 NEWS
+10
+
+BUG FIX:
+* add missing import
+* properly align toolbar buttons
+
 9
 * New translations
 
