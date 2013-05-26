@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-17 00:32-0400\n"
-"PO-Revision-Date: 2012-04-17 11:22+0200\n"
+"POT-Creation-Date: 2013-05-25 00:31-0400\n"
+"PO-Revision-Date: 2013-05-26 05:26+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -17,29 +17,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "xoEditor"
 msgstr "xoEditor"
 
-#: XOEditorActivity.py:104
-msgid "Game"
-msgstr "Game"
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "select colors for your XO icon"
+msgstr "select colors for your XO icon"
 
-#: XOEditorActivity.py:120
-msgid "Save colors"
-msgstr "Save colors"
-
-#: XOEditorActivity.py:132 XOEditorActivity.py:154
+#: XOEditorActivity.py:84 XOEditorActivity.py:104
 msgid "Saving colors"
 msgstr "Saving colors"
 
-#: XOEditorActivity.py:133
+#: XOEditorActivity.py:85
 msgid "Do you want to save these colors?"
 msgstr "Do you want to save these colors?"
 
-#: XOEditorActivity.py:155
+#: XOEditorActivity.py:105
 msgid "A restart is required before your new colors will appear."
 msgstr "A restart is required before your new colors will appear."
+
+#: XOEditorActivity.py:145
+msgid "Game"
+msgstr "Game"
+
+#: XOEditorActivity.py:154
+msgid "Save colors"
+msgstr "Save colors"
 
 #~ msgid "Rotate colors"
 #~ msgstr "Rotate colors"
