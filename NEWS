@@ -1,4 +1,9 @@
 NEWS
+11
+
+ENHACEMENT:
+* New translations
+
 10
 
 BUG FIX:
@@ -6,6 +11,7 @@ BUG FIX:
 * properly align toolbar buttons
 
 9
+ENHACEMENT:
 * New translations
 
 7
@@ -13,18 +19,22 @@ ENHACEMENT:
 * Ignacio Rodríguez port to GTK3
 
 6
+ENHACEMENT:
 * New translations
 
 5
+ENHACEMENT:
 * New translations
 
 4
+ENHACEMENT:
 * New button artwork
 * Eliminated unnecessary rotate feature
 * Sorted colors in spiral from "calm" to "exciting"
 * Drag to repostion dots and XO man (positions saved in Journal)
 
 3
+ENHACEMENT:
 * Rebased on Python
 * Spiral layout of all color combinations
 * Saves new colors (in most Sugar environments)
