@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-25 00:31-0400\n"
-"PO-Revision-Date: 2012-04-20 03:03+0200\n"
+"PO-Revision-Date: 2013-12-14 20:49+0200\n"
 "Last-Translator: Eduardo H. <hoboprimate@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pt\n"
@@ -24,7 +24,7 @@ msgstr "EditarXO"
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
 msgid "select colors for your XO icon"
-msgstr ""
+msgstr "escolhe as cores para o teu icon XO"
 
 #: XOEditorActivity.py:84 XOEditorActivity.py:104
 msgid "Saving colors"
