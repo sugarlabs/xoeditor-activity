@@ -112,6 +112,7 @@ class XOEditorActivity(activity.Activity):
         alert.connect('response', _notification_alert_response_cb, self)
         self.add_alert(alert)
         alert.show()
+
     def _rotate_cb(self, button=None):
         self._game.rotate()
     def write_file(self, file_path):
