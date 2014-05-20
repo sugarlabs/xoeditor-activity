@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-25 00:31-0400\n"
+"PO-Revision-Date: 2013-11-06 23:51+0200\n"
+"Last-Translator: arosella <arosella@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "xoEditor"
+msgstr "xoEditor"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "select colors for your XO icon"
+msgstr "Scegli i colori per l'icona del tuo XO"
+
+#: XOEditorActivity.py:84 XOEditorActivity.py:104
+msgid "Saving colors"
+msgstr "Sto salvando i colori"
+
+#: XOEditorActivity.py:85
+msgid "Do you want to save these colors?"
+msgstr "Vuoi salvare questi colori?"
+
+#: XOEditorActivity.py:105
+msgid "A restart is required before your new colors will appear."
+msgstr "Per far apparire i nuovi colori è necessario riavviare il computer."
+
+#: XOEditorActivity.py:145
+msgid "Game"
+msgstr "Gioco"
+
+#: XOEditorActivity.py:154
+msgid "Save colors"
+msgstr "Salva i colori"
