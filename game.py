@@ -68,6 +68,7 @@ class Game():
 
         # Generate the sprites we'll need...
         self._sprites = Sprites(self._canvas)
+        self._sprites.set_delay(True)
         self._dots = []
         self._xo_man = None
         self._generate_bg('#FFF')
@@ -84,6 +85,7 @@ class Game():
         self._zones = []
         self._calc_zones()
         self._generate_spiral()
+        self._sprites.draw_all()
 
     def _calc_zones(self):
         for color in colors:

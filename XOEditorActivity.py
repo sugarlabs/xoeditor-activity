@@ -78,7 +78,6 @@ class XOEditorActivity(activity.Activity):
         if 'xox' in self.metadata and 'xoy' in self.metadata:
             self._game.move_xo_man(int(self.metadata['xox']),
                                    int(self.metadata['xoy']))
-                                   
 
     def _save_colors_cb(self, button=None):
         ''' Save the new XO colors. '''
@@ -105,7 +104,8 @@ class XOEditorActivity(activity.Activity):
                 self._game.colors[0], self._game.colors[1]))
         alert = NotifyAlert()
         alert.props.title = _('Saving colors')
-        alert.props.msg = _('A restart is required before your new colors will appear.')
+        alert.props.msg = _('A restart is required before your new colors '
+                            'will appear.')
 
 	def _notification_alert_response_cb(alert, response_id, self):
 		self.remove_alert(alert)
@@ -115,6 +115,7 @@ class XOEditorActivity(activity.Activity):
 
     def _rotate_cb(self, button=None):
         self._game.rotate()
+
     def write_file(self, file_path):
         for i in range(len(colors)):
             x, y = self._game.get_dot_xy(i)
@@ -124,7 +125,6 @@ class XOEditorActivity(activity.Activity):
         x, y = self._game.get_xo_man_xy()
         self.metadata['xox'] = str(x)
         self.metadata['xoy'] = str(y)
-
 
     def _setup_toolbars(self, have_toolbox):
 	""" Setup the toolbars. """
