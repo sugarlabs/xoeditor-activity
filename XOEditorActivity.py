@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#Copyright (c) 2012 Walter Bender
+# Copyright (c) 2012 Walter Bender
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,12 +29,10 @@ except ImportError:
 if _have_toolbox:
     from sugar3.activity.widgets import ActivityToolbarButton
     from sugar3.activity.widgets import StopButton
-from sugar3.graphics.objectchooser import ObjectChooser
-from sugar3.graphics.colorbutton import ColorToolButton
 from sugar3.graphics.alert import ConfirmationAlert, NotifyAlert
 from sugar3.graphics.xocolor import colors
 
-from toolbar_utils import button_factory, radio_factory, separator_factory
+from toolbar_utils import button_factory, separator_factory
 
 from gettext import gettext as _
 
@@ -51,7 +49,7 @@ class XOEditorActivity(activity.Activity):
         """ Initialize the toolbars and the game board """
         try:
             super(XOEditorActivity, self).__init__(handle)
-        except dbus.exceptions.DBusException, e:
+        except dbus.exceptions.DBusException as e:
             _logger.error(str(e))
 
         self.nick = profile.get_nick_name()
@@ -66,7 +64,7 @@ class XOEditorActivity(activity.Activity):
 
         # Create a canvas
         canvas = Gtk.DrawingArea()
-        canvas.set_size_request(Gdk.Screen.width(), \
+        canvas.set_size_request(Gdk.Screen.width(),
                                 Gdk.Screen.height())
         self.set_canvas(canvas)
         canvas.show()
@@ -89,17 +87,18 @@ class XOEditorActivity(activity.Activity):
         alert = ConfirmationAlert()
         alert.props.title = _('Saving colors')
         alert.props.msg = _('Do you want to save these colors?')
-	def _change_colors_alert_response_cb(alert, response_id, self):
-		if response_id is Gtk.ResponseType.OK:
-			_logger.debug('saving colors')
-			self.remove_alert(alert)
-			self._confirm_save()
-		elif response_id is Gtk.ResponseType.CANCEL:
-			_logger.debug('cancel save')
-			self.remove_alert(alert)
-	alert.connect('response', _change_colors_alert_response_cb, self)
-	self.add_alert(alert)
-	alert.show()
+
+        def _change_colors_alert_response_cb(alert, response_id, self):
+            if response_id is Gtk.ResponseType.OK:
+                _logger.debug('saving colors')
+                self.remove_alert(alert)
+                self._confirm_save()
+            elif response_id is Gtk.ResponseType.CANCEL:
+                _logger.debug('cancel save')
+                self.remove_alert(alert)
+        alert.connect('response', _change_colors_alert_response_cb, self)
+        self.add_alert(alert)
+        alert.show()
 
     def _confirm_save(self):
         ''' Called from confirmation alert '''
@@ -111,8 +110,8 @@ class XOEditorActivity(activity.Activity):
         alert.props.msg = _('A restart is required before your new colors '
                             'will appear.')
 
-	def _notification_alert_response_cb(alert, response_id, self):
-		self.remove_alert(alert)
+        def _notification_alert_response_cb(alert, response_id, self):
+            self.remove_alert(alert)
         alert.connect('response', _notification_alert_response_cb, self)
         self.add_alert(alert)
         alert.show()
@@ -131,37 +130,37 @@ class XOEditorActivity(activity.Activity):
         self.metadata['xoy'] = str(y)
 
     def _setup_toolbars(self, have_toolbox):
-	""" Setup the toolbars. """
+        """ Setup the toolbars. """
 
-	self.max_participants = 1  # No sharing
+        self.max_participants = 1  # No sharing
 
-	if have_toolbox:
-		toolbox = ToolbarBox()
-		# Activity toolbar
-		activity_button = ActivityToolbarButton(self)
-		toolbox.toolbar.insert(activity_button, 0)
-		activity_button.show()
+        if have_toolbox:
+            toolbox = ToolbarBox()
+            # Activity toolbar
+            activity_button = ActivityToolbarButton(self)
+            toolbox.toolbar.insert(activity_button, 0)
+            activity_button.show()
 
-		self.set_toolbar_box(toolbox)
-		toolbox.show()
-		self.toolbar = toolbox.toolbar
-	else:
-		# Use pre-0.86 toolbar design
-		games_toolbar = Gtk.Toolbar()
-		toolbox = activity.ActivityToolbox(self)
-		self.set_toolbox(toolbox)
-		toolbox.add_toolbar(_('Game'), games_toolbar)
-		toolbox.show()
-		toolbox.set_current_toolbar(1)
-		self.toolbar = games_toolbar
+            self.set_toolbar_box(toolbox)
+            toolbox.show()
+            self.toolbar = toolbox.toolbar
+        else:
+            # Use pre-0.86 toolbar design
+            games_toolbar = Gtk.Toolbar()
+            toolbox = activity.ActivityToolbox(self)
+            self.set_toolbox(toolbox)
+            toolbox.add_toolbar(_('Game'), games_toolbar)
+            toolbox.show()
+            toolbox.set_current_toolbar(1)
+            self.toolbar = games_toolbar
 
-	self._save_colors_button = button_factory(
-		'save-colors', self.toolbar, self._save_colors_cb,
-		tooltip=_('Save colors'))
+        self._save_colors_button = button_factory(
+            'save-colors', self.toolbar, self._save_colors_cb,
+            tooltip=_('Save colors'))
 
-	if _have_toolbox:
-		separator_factory(toolbox.toolbar, True, False)
-		stop_button = StopButton(self)
-		stop_button.props.accelerator = '<Ctrl>q'
-		toolbox.toolbar.insert(stop_button, -1)
-		stop_button.show()
+        if _have_toolbox:
+            separator_factory(toolbox.toolbar, True, False)
+            stop_button = StopButton(self)
+            stop_button.props.accelerator = '<Ctrl>q'
+            toolbox.toolbar.insert(stop_button, -1)
+            stop_button.show()

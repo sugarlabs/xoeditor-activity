@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#Copyright (c) 2012 Walter Bender
+# Copyright (c) 2012 Walter Bender
 # Port To GTK3:
 # Ignacio Rodriguez <ignaciorodriguez@sugarlabs.org>
 
@@ -11,12 +11,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this library; if not, write to the Free Software
 # Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-from gi.repository import Gtk, GObject, Gdk, GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf
 import cairo
 
 from math import atan2, sin, cos, sqrt, pi
-
-from gettext import gettext as _
 
 import logging
 _logger = logging.getLogger('xo-editor-activity')
@@ -124,7 +122,7 @@ class Game():
             x = 510 * self._scale
             y = 280 * self._scale
             self._xo_man = Sprite(self._sprites, x, y,
-                                 self._new_xo_man(self.colors))
+                                  self._new_xo_man(self.colors))
             self._xo_man.type = None
 
     def move_dot(self, i, x, y):
@@ -162,7 +160,7 @@ class Game():
         self.dragpos = [x, y]
 
         spr = self._sprites.find_sprite((x, y))
-        if spr == None or spr == self._bg:
+        if spr is None or spr == self._bg:
             return
         self.startpos = spr.get_xy()
         self.press = spr
@@ -180,10 +178,10 @@ class Game():
         self.dragpos = [x, y]
 
     def _button_release_cb(self, win, event):
-        if self.press == None:
+        if self.press is None:
             return True
         if _distance(self.press.get_xy(), self.startpos) < 20:
-            if type(self.press.type) == int:
+            if isinstance(self.press.type, int):
                 self.i = self.press.type
                 self._new_surface()
             self.press.move(self.startpos)
@@ -203,7 +201,7 @@ class Game():
         # Restrict Cairo to the exposed area
         cr = self._canvas.window.cairo_create()
         cr.rectangle(event.area.x, event.area.y,
-                event.area.width, event.area.height)
+                     event.area.width, event.area.height)
         cr.clip()
         # Refresh sprite list
         self._sprites.redraw_sprites(cr=cr)
@@ -213,18 +211,18 @@ class Game():
 
     def _new_dot(self, color):
         ''' generate a dot of a color color '''
-        if True: # not color in self._dot_cache:
+        if True:  # not color in self._dot_cache:
             self._stroke = color[0]
             self._fill = color[1]
             self._svg_width = int(60 * self._scale)
             self._svg_height = int(60 * self._scale)
             pixbuf = svg_str_to_pixbuf(
-                self._header() + \
+                self._header() +
                 '<circle cx="%f" cy="%f" r="%f" stroke="%s" fill="%s" \
 stroke-width="%f" visibility="visible" />' % (
-                        30 * self._scale, 30 * self._scale,
-                        self._radius * self._scale, self._stroke,
-                        self._fill, self._stroke_width * self._scale) + \
+                    30 * self._scale, 30 * self._scale,
+                    self._radius * self._scale, self._stroke,
+                    self._fill, self._stroke_width * self._scale) +
                 self._footer())
 
             surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
@@ -245,7 +243,7 @@ stroke-width="%f" visibility="visible" />' % (
             self._header() + \
             '<rect width="%f" height="%f" x="%f" \
 y="%f" fill="%s" stroke="none" visibility="visible" />' % (
-                    self._width, self._height, 0, 0, color) + \
+                self._width, self._height, 0, 0, color) + \
             self._footer()
         pixbuf = svg_str_to_pixbuf(string)
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
@@ -258,7 +256,7 @@ y="%f" fill="%s" stroke="none" visibility="visible" />' % (
 
     def _new_xo_man(self, color):
         ''' generate a xo-man of a color color '''
-        if True: # not color in self._xo_cache:
+        if True:  # not color in self._xo_cache:
             self._stroke = color[0]
             self._fill = color[1]
             self._svg_width = int(240. * self._scale)
@@ -270,40 +268,40 @@ y="%f" fill="%s" stroke="none" visibility="visible" />' % (
                 '<path id="Line1" d="M%f,%f C%f,%f %f,%f %f,%f" stroke="%s" \
 stroke-width="%f" stroke-linecap="round" fill="none" visibility="visible" />' \
 % (
-                        165.5 * self._scale, 97 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        74.5 * self._scale, 188 * self._scale,
-                        self._stroke, 37 * self._scale) + \
+                    165.5 * self._scale, 97 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    74.5 * self._scale, 188 * self._scale,
+                    self._stroke, 37 * self._scale) + \
                 '<path id="Line2" d="M%f,%f C%f,%f %f,%f %f,%f" stroke="%s" \
 stroke-width="%f" stroke-linecap="round" fill="none" visibility="visible" />' \
 % (
-                        165.5 * self._scale, 188 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        74.5 * self._scale, 97 * self._scale,
-                        self._stroke, 37 * self._scale) + \
+                    165.5 * self._scale, 188 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    74.5 * self._scale, 97 * self._scale,
+                    self._stroke, 37 * self._scale) + \
                 '<path id="Fill1" d="M%f,%f C%f,%f %f,%f %f,%f" stroke="%s" \
 stroke-width="%f" stroke-linecap="round" fill="none" visibility="visible" />' \
 % (
-                        165.5 * self._scale, 97 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        74.5 * self._scale, 188 * self._scale,
-                        self._fill, 17 * self._scale) + \
+                    165.5 * self._scale, 97 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    74.5 * self._scale, 188 * self._scale,
+                    self._fill, 17 * self._scale) + \
                 '<path id="Fill2" d="M%f,%f C%f,%f %f,%f %f,%f" stroke="%s" \
 stroke-width="%f" stroke-linecap="round" fill="none" visibility="visible" />' \
 % (
-                        165.5 * self._scale, 188 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        120 * self._scale, 140.5 * self._scale,
-                        74.5 * self._scale, 97 * self._scale,
-                        self._fill, 17 * self._scale) + \
+                    165.5 * self._scale, 188 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    120 * self._scale, 140.5 * self._scale,
+                    74.5 * self._scale, 97 * self._scale,
+                    self._fill, 17 * self._scale) + \
                 '<circle id="Circle" cx="%f" cy="%f" r="%f" \
 fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
-                        120 * self._scale, 61.5 * self._scale,
-                        27.5 * self._scale,
-                        self._fill, self._stroke, 11 * self._scale) + \
+                    120 * self._scale, 61.5 * self._scale,
+                    27.5 * self._scale,
+                    self._fill, self._stroke, 11 * self._scale) + \
                 '</g></g>' + \
                 self._footer()
             pixbuf = svg_str_to_pixbuf(string)
@@ -315,7 +313,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
             context.rectangle(0, 0, self._svg_width, self._svg_height)
             context.fill()
             # self._xo_cache[color] = surface
-        return surface # self._xo_cache[color]
+        return surface  # self._xo_cache[color]
 
     def _header(self):
         return '<svg\n' + 'xmlns:svg="http:#www.w3.org/2000/svg"\n' + \
@@ -330,7 +328,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
 
 def svg_str_to_pixbuf(svg_string):
     """ Load pixbuf from SVG string """
-    pl =  GdkPixbuf.PixbufLoader.new_with_type('svg') 
+    pl = GdkPixbuf.PixbufLoader.new_with_type('svg')
     pl.write(svg_string)
     pl.close()
     pixbuf = pl.get_pixbuf()
@@ -380,5 +378,5 @@ def _zone(dv, dh):
 
 
 def _distance(pos1, pos2):
-    return sqrt((pos1[0] - pos2[0]) * (pos1[0] - pos2[0]) + \
+    return sqrt((pos1[0] - pos2[0]) * (pos1[0] - pos2[0]) +
                 (pos1[1] - pos2[1]) * (pos1[1] - pos2[1]))
