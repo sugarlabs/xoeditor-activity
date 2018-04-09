@@ -15,7 +15,7 @@ import dbus
 
 from sugar3.activity import activity
 from sugar3 import profile
-client = GConf.Client.get_default()
+from gi.repository import Gio
 try:
     from sugar3.graphics.toolbarbox import ToolbarBox
     _have_toolbox = True
@@ -99,9 +99,9 @@ class XOEditorActivity(activity.Activity):
 
     def _confirm_save(self):
         ''' Called from confirmation alert '''
-        
-        client.set_string('/desktop/sugar/user/color', '%s,%s' % (
-                self._game.colors[0], self._game.colors[1]))
+        settings = Gio.Settings('org.sugarlabs.user')
+        settings.set_string('color', '%s,%s' % (
+            self._game.colors[0], self._game.colors[1]))
         alert = NotifyAlert()
         alert.props.title = _('Saving colors')
         alert.props.msg = _('A restart is required before your new colors '
