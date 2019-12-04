@@ -143,7 +143,7 @@ class Sprites:
         else:
             self.cr = cr
         if cr is None:
-            print 'sprites.redraw_sprites: no Cairo context'
+            print('sprites.redraw_sprites: no Cairo context')
             return
         for spr in self.list:
             if area is None:
@@ -273,7 +273,7 @@ class Sprite:
     def set_label(self, new_label, i=0):
         ''' Set the label drawn on the sprite '''
         self._extend_labels_array(i)
-        if isinstance(new_label, str) or isinstance(new_label, unicode):
+        if isinstance(new_label, str):
             # pango doesn't like nulls
             self.labels[i] = new_label.replace("\0", " ")
         else:
@@ -348,7 +348,7 @@ class Sprite:
         if cr is None:
             cr = self._sprites.cr
         if cr is None:
-            print 'sprite.draw: no Cairo context.'
+            print('sprite.draw: no Cairo context.')
             return
         for i, img in enumerate(self.cached_surfaces):
             cr.set_source_surface(img, self.rect[0] + self._dx[i],
@@ -470,5 +470,5 @@ class Sprite:
             else:
                 return(-1, -1, -1, -1)
         except IndexError:
-            print "Index Error: %d %d" % (len(array), offset)
+            print("Index Error: {} {}".format(len(array), offset))
             return(-1, -1, -1, -1)
