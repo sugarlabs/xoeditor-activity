@@ -156,7 +156,7 @@ class Game():
 
     def _button_press_cb(self, win, event):
         win.grab_focus()
-        x, y = map(int, event.get_coords())
+        x, y = list(map(int, event.get_coords()))
         self.dragpos = [x, y]
 
         spr = self._sprites.find_sprite((x, y))
@@ -171,7 +171,7 @@ class Game():
             self.dragpos = [0, 0]
             return True
         win.grab_focus()
-        x, y = map(int, event.get_coords())
+        x, y = list(map(int, event.get_coords()))
         dx = x - self.dragpos[0]
         dy = y - self.dragpos[1]
         self.press.move_relative((dx, dy))
@@ -329,7 +329,7 @@ fill="%s" stroke="%s" stroke-width="%f" visibility="visible" />' % (
 def svg_str_to_pixbuf(svg_string):
     """ Load pixbuf from SVG string """
     pl = GdkPixbuf.PixbufLoader.new_with_type('svg')
-    pl.write(svg_string)
+    pl.write(svg_string.encode())
     pl.close()
     pixbuf = pl.get_pixbuf()
     return pixbuf
