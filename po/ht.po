@@ -8,42 +8,42 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-25 00:31-0400\n"
-"PO-Revision-Date: 2016-04-25 18:38+0000\n"
-"Last-Translator: Robert <rbuj@fedoraproject.org>\n"
+"PO-Revision-Date: 2016-03-30 21:23+0000\n"
+"Last-Translator: Blondel <blondel.md@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ca\n"
+"Language: ht\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.1.1\n"
-"X-POOTLE-MTIME: 1461609537.000000\n"
+"X-POOTLE-MTIME: 1459373015.000000\n"
 
 #. TRANS: "name" option from activity.info file
 msgid "xoEditor"
-msgstr "Editor de xo"
+msgstr "xoEditor"
 
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
 msgid "select colors for your XO icon"
-msgstr "seleccioneu els colors per a la vostra icona XO"
+msgstr "chwazi koulè pou ikonn XO w la"
 
 #: XOEditorActivity.py:84 XOEditorActivity.py:104
 msgid "Saving colors"
-msgstr "Desament dels colors"
+msgstr "Anrejistreman koulè w yo"
 
 #: XOEditorActivity.py:85
 msgid "Do you want to save these colors?"
-msgstr "Voleu desar aquests colors?"
+msgstr "Èske w vle anrejistre koulè sa yo?"
 
 #: XOEditorActivity.py:105
 msgid "A restart is required before your new colors will appear."
-msgstr "Cal reiniciar abans que apareguin els vostres nous colors."
+msgstr "W ap bezwen fè yon redemaraj pou nouvo koulè w yo ka parèt."
 
 #: XOEditorActivity.py:145
 msgid "Game"
-msgstr "Joc"
+msgstr "Jwèt"
 
 #: XOEditorActivity.py:154
 msgid "Save colors"
-msgstr "Desa els colors"
+msgstr "Anrejistre koulè yo"
