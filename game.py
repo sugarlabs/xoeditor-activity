@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this library; if not, write to the Free Software
 # Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-from gi.repository import Gtk, Gdk, GdkPixbuf
+from gi.repository import Gdk, GdkPixbuf
 import cairo
 
 from math import atan2, sin, cos, sqrt, pi

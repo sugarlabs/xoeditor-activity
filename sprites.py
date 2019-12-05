@@ -75,7 +75,7 @@ def svg_str_to_pixbuf(svg_string):
 '''
 
 import gi
-gi.require_version('PangoCairo','1.0')
+gi.require_version('PangoCairo', '1.0')
 from gi.repository import Gdk
 from gi.repository import Pango, PangoCairo
 import cairo
@@ -278,9 +278,9 @@ class Sprite:
             self.labels[i] = str(new_label)
         self.inval()
 
-    def set_margins(self, l=0, t=0, r=0, b=0):
+    def set_margins(self, le=0, t=0, r=0, b=0):
         ''' Set the margins for drawing the label '''
-        self._margins = [l, t, r, b]
+        self._margins = [le, t, r, b]
 
     def _extend_labels_array(self, i):
         ''' Append to the labels attribute list '''
