@@ -110,9 +110,6 @@ class XOEditorActivity(activity.Activity):
         self.add_alert(alert)
         alert.show()
 
-    def _rotate_cb(self, button=None):
-        self._game.rotate()
-
     def write_file(self, file_path):
         for i in range(len(colors)):
             x, y = self._game.get_dot_xy(i)

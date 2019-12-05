@@ -133,22 +133,11 @@ class Game():
     def get_xo_man_xy(self):
         return self._xo_man.get_xy()
 
-    def rotate(self):
-        x, y = self._dots[0].get_xy()
-        for i in range(len(colors) - 1):
-            self._dots[i].move(self._dots[i + 1].get_xy())
-        self._dots[-1].move((x, y))
-
     def _generate_bg(self, color):
         ''' a background color '''
         self._bg = Sprite(self._sprites, 0, 0, self._new_background(color))
         self._bg.set_layer(0)
         self._bg.type = None
-
-    def adj_background(self, color):
-        ''' Change background '''
-        self._bg.set_image(self._new_background(color))
-        self._bg.set_layer(0)
 
     def _button_press_cb(self, win, event):
         win.grab_focus()
@@ -191,19 +180,6 @@ class Game():
 
     def __draw_cb(self, canvas, cr):
         self._sprites.redraw_sprites(cr=cr)
-
-    def do_expose_event(self, event):
-        ''' Handle the expose-event by drawing '''
-        # Restrict Cairo to the exposed area
-        cr = self._canvas.window.cairo_create()
-        cr.rectangle(event.area.x, event.area.y,
-                     event.area.width, event.area.height)
-        cr.clip()
-        # Refresh sprite list
-        self._sprites.redraw_sprites(cr=cr)
-
-    def _destroy_cb(self, win, event):
-        Gtk.main_quit()
 
     def _new_dot(self, color):
         ''' generate a dot of a color color '''

@@ -63,8 +63,6 @@ Example usage:
         my_sprite.set_layer(300)
 
         cr = self.window.cairo_create()
-        # In your activity's do_expose_event, put in a call to redraw_sprites
-        self.sprites.redraw_sprites(event.area, cairo_context)
 
 # method for converting SVG to a gtk pixbuf
 def svg_str_to_pixbuf(svg_string):
