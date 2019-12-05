@@ -1,3 +1,14 @@
+14
+
+* Port from Gconf to Gio.Settings (Rahul Bothra),
+* Fix warnings (Rahul Bothra),
+* Port to Python 3 (Bottersnike),
+* Remove unused code (James Cameron),
+* Remove support for old versions of Sugar,
+* Update license,
+* Code reformatting (Rahul Bothra, James Cameron),
+* New translations,
+
 13
 
 * New translations
