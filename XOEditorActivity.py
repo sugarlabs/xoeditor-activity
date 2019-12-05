@@ -20,15 +20,9 @@ import dbus
 from sugar3.activity import activity
 from sugar3 import profile
 
-try:
-    from sugar3.graphics.toolbarbox import ToolbarBox
-    _have_toolbox = True
-except ImportError:
-    _have_toolbox = False
-
-if _have_toolbox:
-    from sugar3.activity.widgets import ActivityToolbarButton
-    from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.activity.widgets import StopButton
 from sugar3.graphics.alert import ConfirmationAlert, NotifyAlert
 from sugar3.graphics.xocolor import colors
 
@@ -60,7 +54,7 @@ class XOEditorActivity(activity.Activity):
 
         self.level = 0
 
-        self._setup_toolbars(_have_toolbox)
+        self._setup_toolbars()
 
         # Create a canvas
         canvas = Gtk.DrawingArea()
@@ -129,38 +123,26 @@ class XOEditorActivity(activity.Activity):
         self.metadata['xox'] = str(x)
         self.metadata['xoy'] = str(y)
 
-    def _setup_toolbars(self, have_toolbox):
+    def _setup_toolbars(self):
         """ Setup the toolbars. """
 
         self.max_participants = 1  # No sharing
 
-        if have_toolbox:
-            toolbox = ToolbarBox()
-            # Activity toolbar
-            activity_button = ActivityToolbarButton(self)
-            toolbox.toolbar.insert(activity_button, 0)
-            activity_button.show()
+        toolbox = ToolbarBox()
+        # Activity toolbar
+        activity_button = ActivityToolbarButton(self)
+        toolbox.toolbar.insert(activity_button, 0)
+        activity_button.show()
 
-            self.set_toolbar_box(toolbox)
-            toolbox.show()
-            self.toolbar = toolbox.toolbar
-        else:
-            # Use pre-0.86 toolbar design
-            games_toolbar = Gtk.Toolbar()
-            toolbox = activity.ActivityToolbox(self)
-            self.set_toolbox(toolbox)
-            toolbox.add_toolbar(_('Game'), games_toolbar)
-            toolbox.show()
-            toolbox.set_current_toolbar(1)
-            self.toolbar = games_toolbar
+        self.set_toolbar_box(toolbox)
+        toolbox.show()
+        self.toolbar = toolbox.toolbar
 
         self._save_colors_button = button_factory(
             'save-colors', self.toolbar, self._save_colors_cb,
             tooltip=_('Save colors'))
 
-        if _have_toolbox:
-            separator_factory(toolbox.toolbar, True, False)
-            stop_button = StopButton(self)
-            stop_button.props.accelerator = '<Ctrl>q'
-            toolbox.toolbar.insert(stop_button, -1)
-            stop_button.show()
+        separator_factory(toolbox.toolbar, True, False)
+        stop_button = StopButton(self)
+        toolbox.toolbar.insert(stop_button, -1)
+        stop_button.show()

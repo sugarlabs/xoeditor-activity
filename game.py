@@ -19,11 +19,7 @@ from math import atan2, sin, cos, sqrt, pi
 import logging
 _logger = logging.getLogger('xo-editor-activity')
 
-try:
-    from sugar3.graphics import style
-    GRID_CELL_SIZE = style.GRID_CELL_SIZE
-except ImportError:
-    GRID_CELL_SIZE = 0
+from sugar3.graphics import style
 from sugar3.graphics.xocolor import colors
 
 from sprites import Sprites, Sprite
@@ -51,7 +47,7 @@ class Game():
         self._canvas.connect("motion-notify-event", self._mouse_move_cb)
 
         self._width = Gdk.Screen.width()
-        self._height = Gdk.Screen.height() - GRID_CELL_SIZE
+        self._height = Gdk.Screen.height() - style.GRID_CELL_SIZE
         self._scale = self._width / 1200.
 
         self.press = None
