@@ -7,3 +7,4 @@ activity_version = 13.1
 show_launcher = yes
 license = GPLv3+;MIT
 summary = select colors for your icon
+repository = https://github.com/sugarlabs/xoeditor-activity
