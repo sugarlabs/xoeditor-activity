@@ -8,39 +8,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 00:31-0400\n"
+"POT-Creation-Date: 2019-12-05 13:59+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. TRANS: "name" option from activity.info file
+#: activity/activity.info:2
 msgid "xoEditor"
 msgstr ""
 
-#. TRANS: "summary" option from activity.info file
-#. TRANS: "description" option from activity.info file
+#: activity/activity.info:3
 msgid "select colors for your XO icon"
 msgstr ""
 
-#: XOEditorActivity.py:84 XOEditorActivity.py:104
+#: XOEditorActivity.py:82 XOEditorActivity.py:103
 msgid "Saving colors"
 msgstr ""
 
-#: XOEditorActivity.py:85
+#: XOEditorActivity.py:83
 msgid "Do you want to save these colors?"
 msgstr ""
 
-#: XOEditorActivity.py:105
+#: XOEditorActivity.py:104
 msgid "A restart is required before your new colors will appear."
 msgstr ""
 
-#: XOEditorActivity.py:145
-msgid "Game"
-msgstr ""
-
-#: XOEditorActivity.py:154
+#: XOEditorActivity.py:140
 msgid "Save colors"
 msgstr ""
