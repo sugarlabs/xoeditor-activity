@@ -1,3 +1,10 @@
+13.1
+
+* Port from Gconf to Gio.Settings (Rahul Bothra),
+* Fix warnings (Rahul Bothra),
+* Update license,
+* New translations,
+
 13
 
 * New translations
